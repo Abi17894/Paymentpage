@@ -1,0 +1,214 @@
+<h3>
+    Payment Information
+</h3>
+<div ng-controller="PaymentController">
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12">
+            <button type="button" title="Add Payment" class="btn btn-info btn-sm" ng-click="addPayment()">
+                <span class="btn-label">
+                    <i class="fa fa-plus"></i>
+                </span> Add Payment
+            </button>
+        </div>
+    </div>
+    <br />
+    <div class="panel">
+        <br />
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12">
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <div class="table-responsive">
+                        <table datatable="ng" class="table table-hover table-striped">
+                            <thead>
+                                <tr class="text-white" style="background-color:#09385f;">
+                                    <th> Name </th>
+                                    <th> IFSC Code </th>
+                                    <th> Account Name </th>
+                                    <th> Confirm Account Name </th>
+                                    <th> Amount </th>
+                                    <th> Remark </th>
+                                    <th class="text-center"> Action </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="payment in payments">
+                                    <td>{{payment.name}}</td>
+                                    <td>{{payment.ifsc_code}}</td>
+                                    <td>{{payment.account_name}}</td>
+                                    <td>{{payment.confirm_account_name}}</td>
+                                    <td>{{payment.amount}}</td>
+                                    <td>{{payment.remark}}</td>
+                                    <td class="nowrap text-center">
+                                        <button title="Edit" ng-click="editPayment(payment.payment_id)" class="btn btn-green">
+                                            <em class="fa fa-edit"></em>
+                                        </button>
+                                        <button title="Delete" ng-click="deletePayment(payment.payment_id)" class="btn btn-danger">
+                                            <em class="icon icon-trash"></em>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br />
+    </div>
+
+    <!-- Modal for Adding Payment -->
+    <script type="text/ng-template" id="/addPayment.html">
+        <div class="modal-header bg-primary">
+            <h4 class="modal-title">
+                <span class="btn-label bg-primary">
+                    <i class="fa fa-plus"></i>
+                </span> Add Payment
+            </h4>
+        </div>
+        <div class="modal-body">
+            <form novalidate="" name="AddPaymentForm" ng-submit="form.AddPaymentForm()" autocomplete="off" class="form-validate form-horizontal">
+                <div class="pd-sm-10">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="mda-form-group float-label">
+                                        <input ng-model="txtName" maxlength="255" required="" class="mda-form-control form-control" />
+                                        <label>Name *</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="mda-form-group float-label">
+                                        <input ng-model="txtIfscCode" maxlength="11" required="" class="mda-form-control form-control" />
+                                        <label>IFSC Code *</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="mda-form-group float-label">
+                                        <input ng-model="txtAccountNumber" maxlength="255" required="" class="mda-form-control form-control" />
+                                        <label>Account Number *</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="mda-form-group float-label">
+                                        <input ng-model="txtConfirmAccountNumber" maxlength="255" required="" class="mda-form-control form-control" />
+                                        <label>Confirm Account Number *</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="mda-form-group float-label">
+                                        <input ng-model="txtAmount" type="number" required="" class="mda-form-control form-control" />
+                                        <label>Amount *</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="mda-form-group float-label">
+                                        <input ng-model="txtRemark" maxlength="255" class="mda-form-control form-control" />
+                                        <label>Remark</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="text-center">
+                        <button type="button" class="btn btn-success btn-md" ng-disabled="AddPaymentForm.$invalid" ng-click="submitPayment()">
+                            <i class="fa fa-arrow-circle-right"></i>&nbsp;&nbsp;Submit
+                        </button>&nbsp;&nbsp;
+                        <button ng-click="ok()" class="btn btn-danger">
+                            <i class="fa icon-close"></i>&nbsp;&nbsp;Close
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </script>
+
+    <!-- Modal for Editing Payment -->
+    <script type="text/ng-template" id="/editPayment.html">
+        <div class="modal-header bg-primary">
+            <h4 class="modal-title">
+                <span class="btn-label bg-primary">
+                    <i class="fa fa-edit"></i>
+                </span> Edit Payment
+            </h4>
+        </div>
+        <div class="modal-body">
+            <form novalidate="" name="EditPaymentForm" ng-submit="form.EditPaymentForm()" autocomplete="off" class="form-validate form-horizontal">
+                <div class="pd-sm-10">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="mda-form-group">
+                                        <input ng-model="txtEditName" maxlength="255" disabled class="mda-form-control form-control" />
+                                        <label>Name *</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="mda-form-group">
+                                        <input ng-model="txtEditIfscCode" maxlength="11" disabled class="mda-form-control form-control" />
+                                        <label>IFSC Code *</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="mda-form-group">
+                                        <input ng-model="txtEditAccountNumber" maxlength="255" disabled class="mda-form-control form-control" />
+                                        <label>Account Number *</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="mda-form-group">
+                                        <input ng-model="txtEditConfirmAccountNumber" maxlength="255" disabled class="mda-form-control form-control" />
+                                        <label>Confirm Account Number *</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="mda-form-group">
+                                        <input ng-model="txtEditAmount" type="number" disabled class="mda-form-control form-control" />
+                                        <label>Amount *</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="mda-form-group">
+                                        <input ng-model="txtEditRemark" maxlength="255" class="mda-form-control form-control" />
+                                        <label>Remark</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="text-center">
+                        <button type="button" class="btn btn-success btn-md" ng-disabled="EditPaymentForm.$invalid" ng-click="updatePayment()">
+                            <i class="fa fa-arrow-circle-right"></i>&nbsp;&nbsp;Update
+                        </button>&nbsp;&nbsp;
+                        <button ng-click="ok()" class="btn btn-danger">
+                            <i class="fa icon-close"></i>&nbsp;&nbsp;Close
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </script>
+</div>
